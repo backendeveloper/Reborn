@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reborn.Domain.Infrastructure\Reborn.Domain.Infrastructure.csproj" />
+    <ProjectReference Include="..\Reborn.Domain.Model\Reborn.Domain.Model.csproj" />
+  </ItemGroup>
+
+</Project>

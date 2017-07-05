@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reborn.Common.Core\Reborn.Common.Core.csproj" />
+    <ProjectReference Include="..\Reborn.Common.Dto\Reborn.Common.Dto.csproj" />
+    <ProjectReference Include="..\Reborn.Domain.Infrastructure\Reborn.Domain.Infrastructure.csproj" />
+    <ProjectReference Include="..\Reborn.Domain.Repository\Reborn.Domain.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  reborn.web.api:
+    image: reborn.web.api
+    build:
+      context: ./src/Reborn.Web.Api
+      dockerfile: Dockerfile
