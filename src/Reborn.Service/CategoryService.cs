@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Reborn.Common.Core.Extensions;
 using Reborn.Common.Dto;
 using Reborn.Domain.Infrastructure;
@@ -24,21 +25,21 @@ namespace Reborn.Service
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryService()
-        {
-            //For unit testing only
-        }
+        private readonly IMapper _mapper;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+      
+
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         public async Task<CategoryDto> GetByIdAsync(string id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
 
-            return await Task.FromResult(AutoMapper.Mapper.Map<CategoryDto>(category));
+            return await Task.FromResult(_mapper.Map<CategoryDto>(category));
         }
 
         public PagedList<CategoryDto> GetPage(int pageNumber, int pageSize, bool totalCount)
