@@ -24,6 +24,11 @@ namespace Reborn.Service
     {
         private readonly ICategoryRepository _categoryRepository;
 
+        public CategoryService()
+        {
+            //For unit testing only
+        }
+
         public CategoryService(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
