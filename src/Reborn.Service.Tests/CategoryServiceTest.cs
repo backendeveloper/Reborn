@@ -12,16 +12,16 @@ namespace Reborn.Service.Tests
     {
         private readonly Mock<ICategoryRepository> _mockRepository;
         private readonly ICategoryService _categoryService;
-        private readonly Mock<IMapper> _mapper;
+        private readonly Mock<IMapper> _mockMapper;
 
         public CategoryServiceTest()
         {
-            _mapper = new Mock<IMapper>();
+            _mockMapper = new Mock<IMapper>();
             _mockRepository = new Mock<ICategoryRepository>();
-            _categoryService = new CategoryService(_mockRepository.Object, _mapper.Object);
+            _categoryService = new CategoryService(_mockRepository.Object, _mockMapper.Object);
         }
 
-        [Fact]
+        [Fact] 
         public async Task should_get_category_by_id_returns_expected_dto()
         {
             //Given
@@ -33,7 +33,7 @@ namespace Reborn.Service.Tests
                 .Setup(c => c.GetByIdAsync(It.IsAny<string>()))
                 .Returns(() => Task.FromResult(expectedResult));
 
-            _mapper
+            _mockMapper
                 .Setup(c => c.Map<CategoryDto>(expectedResult))
                     .Returns(() => new CategoryDto()
                     {
