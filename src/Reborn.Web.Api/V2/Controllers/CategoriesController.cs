@@ -2,16 +2,16 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Reborn.Service;
-using Reborn.Service.RequestModels;
 
-namespace Reborn.Web.Api.Controllers
+namespace Reborn.Web.Api.V2.Controllers
 {
-   // [Route("api/[controller]")]
-    public class CategoriesController : BaseController
+    [ApiVersion("2")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class CategoriesController : BaseV2Controller
     {
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
-        
+         
         public CategoriesController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
