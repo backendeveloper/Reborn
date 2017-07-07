@@ -21,13 +21,15 @@ namespace Reborn.Service.Tests
             _categoryService = new CategoryService(_mockRepository.Object, _mockMapper.Object);
         }
 
-        [Fact] 
+        [Fact]
         public async Task should_get_category_by_id_returns_expected_dto()
         {
             //Given
-            var expectedResult = new Category();
-            expectedResult.Title = "Expected Category";
-            expectedResult.Description = "Expected Description";
+            var expectedResult = new Category
+            {
+                Title = "Expected Category",
+                Description = "Expected Description"
+            };
 
             _mockRepository
                 .Setup(c => c.GetByIdAsync(It.IsAny<string>()))
@@ -35,11 +37,11 @@ namespace Reborn.Service.Tests
 
             _mockMapper
                 .Setup(c => c.Map<CategoryDto>(expectedResult))
-                    .Returns(() => new CategoryDto()
-                    {
-                        Description = expectedResult.Description,
-                        Title = expectedResult.Title
-                    });
+                .Returns(() => new CategoryDto()
+                {
+                    Description = expectedResult.Description,
+                    Title = expectedResult.Title
+                });
 
             //When
             var result = await _categoryService.GetByIdAsync("ff02e91b-9e6e-4ddc-8d2b-cce0ac565b60");
