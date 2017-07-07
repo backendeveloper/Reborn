@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Reborn.Service;
 using Reborn.Service.RequestModels;
@@ -6,43 +7,40 @@ using Reborn.Service.RequestModels;
 namespace Reborn.Web.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class CategoriesController : Controller
     {
-
         private readonly ICategoryService _categoryService;
-
-        public ValuesController(ICategoryService categoryService)
+        private readonly IMapper _mapper;
+        
+        public CategoriesController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
-        // GET api/values
+        // GET api/categories
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var result = _categoryService.GetPage(1, 20, true);
 
-            var rm = new CategoryRequestModel
-            {
-                [nameof(CategoryRequestModel.ShowOnMenu)] = true,
-                [nameof(CategoryRequestModel.Slug)] = "turkiye"
-            };
-            // rm[nameof(rm.Status)] = 2;
+            //var rm = new CategoryRequestModel
+            //{
+            //    [nameof(CategoryRequestModel.ShowOnMenu)] = true,
+            //    [nameof(CategoryRequestModel.Slug)] = "turkiye"
+            //};
 
-            var ct = await _categoryService.FirstOrDefaultAsync(rm);
+            //var ct = await _categoryService.FirstOrDefaultAsync(rm);
 
 
 
             return Ok(result);
         }
 
-        // GET api/values/5
+        // GET api/categories/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-
-
-
             var category = await _categoryService.GetByIdAsync(id);
 
             return Ok(new
