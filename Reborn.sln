@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reborn.Service", "src\Rebor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{07CE9B78-9DFA-4E9E-BC83-354B42B6DB46}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reborn.Service.Tests", "tests\Reborn.Service.Tests\Reborn.Service.Tests.csproj", "{2296AFF8-5112-43CA-BF76-745768E3B6F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{10F03B51-2E0A-407F-8545-1F646DE89AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10F03B51-2E0A-407F-8545-1F646DE89AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10F03B51-2E0A-407F-8545-1F646DE89AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2296AFF8-5112-43CA-BF76-745768E3B6F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2296AFF8-5112-43CA-BF76-745768E3B6F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2296AFF8-5112-43CA-BF76-745768E3B6F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2296AFF8-5112-43CA-BF76-745768E3B6F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +85,6 @@ Global
 		{D9085393-9B52-4F6E-A193-70FB533A30E7} = {4AAC7754-98F5-4AF3-BA1D-839339716517}
 		{7F432A22-0DE9-4DD4-A0B1-8722B11E51D1} = {4AAC7754-98F5-4AF3-BA1D-839339716517}
 		{10F03B51-2E0A-407F-8545-1F646DE89AB4} = {F5349B7E-3594-4251-AF6B-C7A769F6CC13}
+		{2296AFF8-5112-43CA-BF76-745768E3B6F2} = {07CE9B78-9DFA-4E9E-BC83-354B42B6DB46}
 	EndGlobalSection
 EndGlobal
