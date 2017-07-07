@@ -6,8 +6,8 @@ using Reborn.Service.RequestModels;
 
 namespace Reborn.Web.Api.Controllers
 {
-    [Route("api/[controller]")]
-    public class CategoriesController : Controller
+   // [Route("api/[controller]")]
+    public class CategoriesController : BaseController
     {
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;

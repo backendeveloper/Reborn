@@ -17,14 +17,14 @@ namespace Reborn.Service
     {
         Task<CategoryDto> GetByIdAsync(string id);
         PagedList<CategoryDto> GetPage(int page, int pageSize, bool totalCount);
-        Task<CategoryDto> FirstOrDefaultAsync(CategoryRequestModel requestModel);
+        Task<CategoryDto> SingleOrDefaultAsync(CategoryRequestModel requestModel);
     }
 
     public class CategoryService : BaseService, ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
-      
+
         public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
@@ -45,7 +45,7 @@ namespace Reborn.Service
             return new PagedList<CategoryDto>(categoryPage.Data.Select(_mapper.Map<CategoryDto>).ToList(), categoryPage.TotalCount);
         }
 
-        public async Task<CategoryDto> FirstOrDefaultAsync(CategoryRequestModel requestModel)
+        public async Task<CategoryDto> SingleOrDefaultAsync(CategoryRequestModel requestModel)
         {
             Expression<Func<Category, bool>> expression = null;
             if (requestModel.IsChanged(nameof(requestModel.ShowOnMenu)) && requestModel.ShowOnMenu)
