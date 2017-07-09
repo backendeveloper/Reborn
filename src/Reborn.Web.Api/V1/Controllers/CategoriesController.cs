@@ -2,7 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Reborn.Service;
-using Reborn.Service.RequestModels;
+using Reborn.Service.FilterModels;
 using Reborn.Web.Api.V2.Controllers;
 
 namespace Reborn.Web.Api.V1.Controllers
@@ -13,7 +13,7 @@ namespace Reborn.Web.Api.V1.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
-        
+
         public CategoriesController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
@@ -24,17 +24,14 @@ namespace Reborn.Web.Api.V1.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = _categoryService.GetPage(1, 20, true);
-
-            //var rm = new CategoryRequestModel
-            //{
-            //    [nameof(CategoryRequestModel.ShowOnMenu)] = true,
-            //    [nameof(CategoryRequestModel.Slug)] = "turkiye"
-            //};
-
-            //var ct = await _categoryService.FirstOrDefaultAsync(rm);
-
-
+            var result = await _categoryService.GetPageAsync(new CategoryFilterModels.GetPageFilterModel()
+            {
+                Page = 1,
+                PageSize = 20,
+                TotalCount = true,
+                Slug = "turkiye",
+                Status = 2
+            });
 
             return Ok(result);
         }
@@ -43,13 +40,12 @@ namespace Reborn.Web.Api.V1.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var category = await _categoryService.GetByIdAsync(id);
-
-            return Ok(new
+            var category = await _categoryService.GetByIdAsync(new StandartFilterModels.GetByIdFilterModel()
             {
-                category.Title,
-                category.Description
+                Id = id
             });
+
+            return Ok(category);
         }
 
         // POST api/values

@@ -31,10 +31,10 @@ namespace Reborn.Domain.Infrastructure
 
         bool Exist(Expression<Func<T, bool>> expression = null);
 
-        PagedList<T> GetPage<TOrder>(Pagination pagination, Expression<Func<T, bool>> expression, Expression<Func<T, TOrder>> order,
-            bool totalCount = false);
-    } 
-    
+        PagedList<T> GetPage<TOrder>(Pagination pagination, Expression<Func<T, bool>> expression, Expression<Func<T, TOrder>> order, bool desc,
+            bool totalCount);
+    }
+
     public static class StringExtension
     {
         public static Guid ToGuid(this string id)

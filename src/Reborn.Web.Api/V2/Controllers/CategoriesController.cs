@@ -22,32 +22,14 @@ namespace Reborn.Web.Api.V2.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = _categoryService.GetPage(1, 20, true);
-
-            //var rm = new CategoryRequestModel
-            //{
-            //    [nameof(CategoryRequestModel.ShowOnMenu)] = true,
-            //    [nameof(CategoryRequestModel.Slug)] = "turkiye"
-            //};
-
-            //var ct = await _categoryService.FirstOrDefaultAsync(rm);
-
-
-
-            return Ok(result);
+            return Ok();
         }
 
         // GET api/categories/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var category = await _categoryService.GetByIdAsync(id);
-
-            return Ok(new
-            {
-                category.Title,
-                category.Description
-            });
+            return Ok();
         }
 
         // POST api/values
