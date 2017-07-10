@@ -7,12 +7,9 @@ namespace Reborn.Common.Core.Extensions
 {
     public static class PredicateBuilder
     {
-
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> a, Expression<Func<T, bool>> b)
         {
-
             ParameterExpression p = a.Parameters[0];
-
             SubstExpressionVisitor visitor = new SubstExpressionVisitor();
             visitor.subst[b.Parameters[0]] = p;
 
@@ -22,9 +19,7 @@ namespace Reborn.Common.Core.Extensions
 
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> a, Expression<Func<T, bool>> b)
         {
-
             ParameterExpression p = a.Parameters[0];
-
             SubstExpressionVisitor visitor = new SubstExpressionVisitor();
             visitor.subst[b.Parameters[0]] = p;
 

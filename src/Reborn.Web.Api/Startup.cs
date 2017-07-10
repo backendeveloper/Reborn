@@ -12,6 +12,10 @@ using Reborn.Service;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
+using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Attributes;
 
 namespace Reborn.Web.Api
 {
@@ -26,14 +30,34 @@ namespace Reborn.Web.Api
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-         
+
         public IConfigurationRoot Configuration { get; }
+
+
+
 
         // This method gets called by the runtime. Use this method to add services to theer.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore().AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
-            services.AddMvc();
+            services.AddMvc().AddFluentValidation(fv =>
+            {
+                fv.ValidatorFactoryType = typeof(AttributedValidatorFactory);
+                // fv.RegisterValidatorsFromAssemblyContaining<ValidatorAttribute>();
+
+                //foreach (var item in AssemblyScanner.FindValidatorsInAssembly(Assembly.GetEntryAssembly()))
+                //{
+                //    //  builder.RegisterType(item.ValidatorType).Keyed<IValidator>(item.InterfaceType).As<IValidator>();
+
+
+                //    //var type = item.ValidatorType;
+                //    fv.RegisterValidatorsFromAssemblyContaining<IValidator>();
+                //}
+
+                //fv.RegisterValidatorsFromAssembly(Startup);
+
+                fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+            });
             services.AddAutoMapper();
 
             services.AddApiVersioning(o =>

@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Reborn.Service;
 using Reborn.Service.FilterModels;
+using Reborn.Web.Api.V1.Models;
 using Reborn.Web.Api.V2.Controllers;
 
 namespace Reborn.Web.Api.V1.Controllers
@@ -50,8 +51,10 @@ namespace Reborn.Web.Api.V1.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Post(CategoryCreateViewModel model)
         {
+
+            return Ok();
         }
 
         // PUT api/values/5
