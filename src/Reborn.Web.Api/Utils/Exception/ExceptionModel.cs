@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace Reborn.Web.Api.Utils.Exception
 {
@@ -34,9 +32,8 @@ namespace Reborn.Web.Api.Utils.Exception
 
         /// <summary>
         /// hata mesajlarının key value listesi
-        /// <see cref="ErrorEntity"/>
         /// </summary>
-        public virtual List<ErrorEntity> Errors { get; set; }
+        public virtual Dictionary<string,string> Errors { get; set; }
 
         /// <summary>
         /// application dan gönderilecek hata tipleri
@@ -62,12 +59,8 @@ namespace Reborn.Web.Api.Utils.Exception
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ErrorEntity
+    public class ExceptionModel : BaseException
     {
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public override string Application => Assembly.GetEntryAssembly().GetName().Name;
     }
 }

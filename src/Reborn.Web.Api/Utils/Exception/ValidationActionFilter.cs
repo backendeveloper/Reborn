@@ -3,41 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Reborn.Web.Api.Utils.Exception
 {
 
-    public class ValidationActionFilter : ActionFilterAttribute
+    public class ValidationActionFilter : IActionFilter
     {
-        public override void OnActionExecuting(ActionExecutingContext actionContext)
+        public void OnActionExecuting(ActionExecutingContext context)
         {
-            if (actionContext.HttpContext.Request.Method.ToLower() != HttpMethod.Post.ToString().ToLower()
-                && actionContext.HttpContext.Request.Method.ToLower() != HttpMethod.Put.ToString().ToLower()) return;
+            if (context.ModelState.IsValid)
+                return;
 
-            var modelState = actionContext.ModelState;
-            var argumentName = GetActionModelArgumentName(actionContext);
-            var argumentIsNull = actionContext.ActionArguments.Any(x => argumentName == x.Key && x.Value == null);
+            var errors = context.ModelState
+                .Where(x => x.Value != null)
+                .ToDictionary(s => s.Key,
+                    s => string.Join("|", s.Value.Errors.Where(x => !string.IsNullOrEmpty(x.ErrorMessage)).Select(c => c.ErrorMessage)));
 
-            var errorMessage = string.Empty;
-            if (argumentIsNull)
-                errorMessage = "model_is_not_null";
-            else if (!modelState.IsValid)
-                errorMessage = "model_validation_exception";
+            var exceptionModel = new ExceptionModel()
+            {
+                Type = ExceptionModel.ExceptionType.Validation.ToString(),
+                Key = "model_is_invalid",
+                Errors = errors
+            };
 
-            if (!string.IsNullOrEmpty(errorMessage))
-                throw new ValidationException(errorMessage, modelState);
+            context.Result = new BadRequestObjectResult(exceptionModel);
         }
 
-        private static string GetActionModelArgumentName(ActionExecutingContext actionContext)
+        public void OnActionExecuted(ActionExecutedContext context)
         {
-            return "model";
 
-
-            //return actionContext.ActionDescriptor.GetParameters()
-            //    .Where(x => x.ParameterType.BaseType == typeof(object))
-            //    .Select(s => s.ParameterName)
-            //    .FirstOrDefault();
         }
     }
 }
