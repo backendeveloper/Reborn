@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Reborn.Service;
 using Reborn.Service.FilterModels;
+using Reborn.Web.Api.Utils.Exception;
 using Reborn.Web.Api.V1.Models;
 using Reborn.Web.Api.V2.Controllers;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -53,32 +54,31 @@ namespace Reborn.Web.Api.V1.Controllers
             return Ok(category);
         }
 
-        // POST api/values        
+        // POST api/categories        
         /// <summary>
         /// Creates a TodoItem.
         /// </summary>
         /// <remarks>
         /// Note that the key is a GUID and not an integer.
         ///  
-        ///     POST /Todo
+        ///     POST /Categories
         ///     {
-        ///        "key": "0e7ad584-7788-4ab1-95a6-ca0a5b444cbb",
-        ///        "name": "Item1",
-        ///        "isComplete": true
+        ///        "Title": "Item1",
+        ///        "Description": "desc"
         ///     }
         /// 
         /// </remarks>
         /// <param name="model"></param>
         /// <returns>New Created Category Item</returns>
-        /// <response code="201">Returns the newly created item</response>
+        /// <response code="200">Returns the newly created item</response>
         /// <response code="400">If the item is null</response>
         [HttpPost]
-        [ProducesResponseType(typeof(CategoryCreateViewModel), 201)]
-        [ProducesResponseType(typeof(CategoryCreateViewModel), 400)]
+        [ProducesResponseType(typeof(CategoryCreateViewModel), 200)]
+        [ProducesResponseType(typeof(ExceptionModel), 400)]      
         public async Task<IActionResult> Post(CategoryCreateViewModel model)
         {
 
-            return Ok();
+            return Ok("asd");
         }
 
         // PUT api/values/5

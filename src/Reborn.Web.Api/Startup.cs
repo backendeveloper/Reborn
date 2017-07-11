@@ -52,7 +52,7 @@ namespace Reborn.Web.Api
                 m.Filters.Add(new ErrorActionFilter());
             }).AddFluentValidation(fv =>
             {
-               // fv.ValidatorFactoryType = typeof(FluentValidatorFactory); //typeof(AttributedValidatorFactory);
+                // fv.ValidatorFactoryType = typeof(FluentValidatorFactory); //typeof(AttributedValidatorFactory);
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
 
@@ -94,7 +94,7 @@ namespace Reborn.Web.Api
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IDatabaseFactory, DatabaseFactory>();
-           // services.AddTransient<IValidatorFactory, FluentValidatorFactory>();
+            // services.AddTransient<IValidatorFactory, FluentValidatorFactory>();
 
             //services.AddTransient<IServiceProvider,Service.>()
 
@@ -267,7 +267,8 @@ namespace Reborn.Web.Api
 
                 if (description.RouteInfo == null)
                 {
-                    if (context.SchemaRegistry.Definitions.First().Value.Required
+                    var definititon = context.SchemaRegistry.Definitions.FirstOrDefault();
+                    if (definititon.Value.Required!=null  && definititon.Value.Required
                         .Any(x => x.ToLower() == parameter.Name.ToLower()))
                     {
                         parameter.Required = true;
