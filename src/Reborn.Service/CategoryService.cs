@@ -66,7 +66,7 @@ namespace Reborn.Service
         {
             Expression<Func<Category, bool>> predicate = (p) => (p.Status == filterModel.Status);
             var pagedCategory = _categoryRepository
-                                .GetPage<Guid>(new Pagination(filterModel.Page, filterModel.PageSize), predicate, o => o.Id,false, filterModel.TotalCount);
+                                .GetPage<Guid>(new Pagination(filterModel.Page, filterModel.PageSize), predicate, o => o.Id, false, filterModel.TotalCount);
             var result = new PagedList<CategoryDto>(pagedCategory.Data.Select(_mapper.Map<CategoryDto>).ToList(), pagedCategory.TotalCount);
 
             return await Task.FromResult(result);

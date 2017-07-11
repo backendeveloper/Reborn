@@ -89,7 +89,7 @@ namespace Reborn.Service.Tests
             var expectedResult = new PagedList<Category>(data, 8);
             
             _mockRepository
-                .Setup(c => c.GetPage(It.IsAny<Pagination>(), It.IsAny<Expression<Func<Category, bool>>>(), It.IsAny<Expression<Func<Category, PagedList<CategoryDto>>>>(), false,true))
+                .Setup(c => c.GetPage(It.IsAny<Pagination>(), It.IsAny<Expression<Func<Category, bool>>>(), It.IsAny<Expression<Func<Category, Guid>>>(), false,true))
                 .Returns(() => expectedResult);
 
             _mockMapper
