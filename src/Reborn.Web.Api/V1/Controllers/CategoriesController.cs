@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Reborn.Service;
-using Reborn.Service.FilterModels;
+using Reborn.Service.RequestModels;
 using Reborn.Web.Api.Utils.Exception;
 using Reborn.Web.Api.V1.Models;
 using Reborn.Web.Api.V2.Controllers;
@@ -30,7 +30,7 @@ namespace Reborn.Web.Api.V1.Controllers
         {
             throw new Exception("asdasd");
 
-            var result = await _categoryService.GetPageAsync(new CategoryFilterModels.GetPageFilterModel()
+            var result = await _categoryService.GetPageAsync(new CategoryRequestModels.GetPageRequestModel()
             {
                 Page = 1,
                 PageSize = 20,
@@ -46,7 +46,7 @@ namespace Reborn.Web.Api.V1.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
-            var category = await _categoryService.GetByIdAsync(new StandartFilterModels.GetByIdFilterModel()
+            var category = await _categoryService.GetByIdAsync(new StandartRequestModels.GetByIdRequestModel()
             {
                 Id = id
             });
@@ -75,7 +75,7 @@ namespace Reborn.Web.Api.V1.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CategoryCreateViewModel), 200)]
         [ProducesResponseType(typeof(ExceptionModel), 400)]      
-        public async Task<IActionResult> Post(CategoryCreateViewModel model)
+        public async Task<IActionResult> Post([FromBody]CategoryCreateViewModel model)
         {
 
             return Ok("asd");

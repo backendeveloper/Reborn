@@ -9,7 +9,7 @@ using Reborn.Common.Dto;
 using Reborn.Domain.Infrastructure;
 using Reborn.Domain.Model;
 using Reborn.Domain.Repository;
-using Reborn.Service.FilterModels;
+using Reborn.Service.RequestModels;
 using Xunit;
 
 namespace Reborn.Service.Tests
@@ -53,7 +53,7 @@ namespace Reborn.Service.Tests
                 });
 
             //When
-            var result = await _categoryService.GetByIdAsync(new StandartFilterModels.GetByIdFilterModel()
+            var result = await _categoryService.GetByIdAsync(new StandartRequestModels.GetByIdRequestModel()
             {
                 Id = "ff02e91b-9e6e-4ddc-8d2b-cce0ac565b60"
             });
@@ -97,7 +97,7 @@ namespace Reborn.Service.Tests
                 .Returns(() => new PagedList<CategoryDto>(new List<CategoryDto>(), 8));
 
             //When
-            var result = await _categoryService.GetPageAsync(new CategoryFilterModels.GetPageFilterModel()
+            var result = await _categoryService.GetPageAsync(new CategoryRequestModels.GetPageRequestModel()
             {
                 Page = 1,
                 PageSize = 20,

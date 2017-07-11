@@ -3,11 +3,11 @@ using AutoMapper;
 using Reborn.Common.Dto;
 using Reborn.Domain.Infrastructure;
 using Reborn.Domain.Repository;
-using Reborn.Service.FilterModels;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Reborn.Domain.Model;
+using Reborn.Service.RequestModels;
 
 namespace Reborn.Service
 {
@@ -19,16 +19,16 @@ namespace Reborn.Service
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="filterModel"></param>
+        /// <param name="requestModel"></param>
         /// <returns></returns>
-        Task<CategoryDto> GetByIdAsync(StandartFilterModels.GetByIdFilterModel filterModel);
+        Task<CategoryDto> GetByIdAsync(StandartRequestModels.GetByIdRequestModel requestModel);
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="filterModel"></param>
+        /// <param name="requestModel"></param>
         /// <returns></returns>
-        Task<PagedList<CategoryDto>> GetPageAsync(CategoryFilterModels.GetPageFilterModel filterModel);
+        Task<PagedList<CategoryDto>> GetPageAsync(CategoryRequestModels.GetPageRequestModel requestModel);
     }
 
     /// <summary>
@@ -53,20 +53,20 @@ namespace Reborn.Service
 
         #endregion
 
-        #region ICategoryService implements
+        #region ICategoryService Implementation
 
-        public async Task<CategoryDto> GetByIdAsync(StandartFilterModels.GetByIdFilterModel filterModel)
+        public async Task<CategoryDto> GetByIdAsync(StandartRequestModels.GetByIdRequestModel requestModel)
         {
-            var category = await _categoryRepository.GetByIdAsync(filterModel.Id);
+            var category = await _categoryRepository.GetByIdAsync(requestModel.Id);
 
             return await Task.FromResult(_mapper.Map<CategoryDto>(category));
         }
 
-        public async Task<PagedList<CategoryDto>> GetPageAsync(CategoryFilterModels.GetPageFilterModel filterModel)
+        public async Task<PagedList<CategoryDto>> GetPageAsync(CategoryRequestModels.GetPageRequestModel requestModel)
         {
-            Expression<Func<Category, bool>> predicate = (p) => (p.Status == filterModel.Status);
+            Expression<Func<Category, bool>> predicate = (p) => (p.Status == requestModel.Status);
             var pagedCategory = _categoryRepository
-                                .GetPage<Guid>(new Pagination(filterModel.Page, filterModel.PageSize), predicate, o => o.Id, false, filterModel.TotalCount);
+                                .GetPage<Guid>(new Pagination(requestModel.Page, requestModel.PageSize), predicate, o => o.Id, false, requestModel.TotalCount);
             var result = new PagedList<CategoryDto>(pagedCategory.Data.Select(_mapper.Map<CategoryDto>).ToList(), pagedCategory.TotalCount);
 
             return await Task.FromResult(result);

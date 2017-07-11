@@ -1,26 +1,26 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using Reborn.Domain.Model.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
-using Reborn.Domain.Model.Utility;
 
 namespace Reborn.Domain.Infrastructure
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : BaseMongoEntity
     {
-        protected readonly MongoContext _context;
+        private readonly MongoContext _context;
         private const string IdName = "_id";
+        private IMongoCollection<T> Collection => _context.GetCollection<T>();
 
         protected BaseRepository(IDatabaseFactory databaseFactory)
         {
             _context = databaseFactory.Get();
         }
 
-        private IMongoCollection<T> Collection => _context.GetCollection<T>();
+        #region IRepository Implementation
 
         public virtual T Create(T entity)
         {
@@ -122,13 +122,15 @@ namespace Reborn.Domain.Infrastructure
         public virtual PagedList<T> GetPage<TOrder>(Pagination pagination, Expression<Func<T, bool>> expression, Expression<Func<T, TOrder>> order, bool desc, bool totalCount)
         {
             var resultsQuerable = Get();
-            resultsQuerable = desc ? resultsQuerable.OrderByDescending(order) 
-                                   : resultsQuerable.OrderBy(order);
+            resultsQuerable = desc ? resultsQuerable.OrderByDescending(order)
+                : resultsQuerable.OrderBy(order);
 
-            var results= resultsQuerable.Where(expression).GetPage(pagination).ToList();
+            var results = resultsQuerable.Where(expression).GetPage(pagination).ToList();
             var total = totalCount ? Get().Count(expression) : 0;
 
             return new PagedList<T>(results, total);
         }
+
+        #endregion
     }
 }

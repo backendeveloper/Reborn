@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Reborn.Service.FilterModels
+﻿namespace Reborn.Service.RequestModels
 {
-    public class StandartFilterModels
+    public class StandartRequestModels
     {
-        public class GetByIdFilterModel
+        public class GetByIdRequestModel
         {
             public string Id { get; set; }
         }
-
+         
         public abstract class BasePagingModel
         {
             public int PageSize { get; set; }
