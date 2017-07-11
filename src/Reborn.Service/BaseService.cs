@@ -5,12 +5,14 @@ using Reborn.Common.Core.Exceptions;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Reborn.Service
 {
     public abstract class BaseService
     {
-        protected bool ModelValidate(object obj) 
+
+        protected bool ModelValidate(object obj)
         {
             var validator = GetValidator(obj);
             if (validator == null)
@@ -23,7 +25,19 @@ namespace Reborn.Service
 
             return true;
         }
-         
+        protected async Task<bool> ModelValidateAsync(object obj)
+        {
+            var validator = GetValidator(obj);
+            if (validator != null)
+            {
+                var validationResult = await validator.ValidateAsync(obj);
+                if (!validationResult.IsValid)
+                    throw new InvalidModelException(validationResult.Errors.ToDictionary(x => x.PropertyName, x => x.ErrorMessage));
+            }
+
+            return await Task.FromResult(true);
+        }
+
         private IValidator GetValidator(object obj)
         {
             Type type = obj.GetType();

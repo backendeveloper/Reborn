@@ -47,7 +47,7 @@ namespace Reborn.Service
 
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
-       // IValidatorFactory _validatorFactory;
+        // IValidatorFactory _validatorFactory;
 
         #endregion
 
@@ -57,8 +57,8 @@ namespace Reborn.Service
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
-           // _validatorFactory = validatorFactory;
-            
+            // _validatorFactory = validatorFactory;
+
         }
 
         #endregion
@@ -67,15 +67,16 @@ namespace Reborn.Service
 
         public async Task<CategoryDto> GetByIdAsync(StandartRequestModels.GetByIdRequestModel requestModel)
         {
+            var modelIsValid = await ModelValidateAsync(requestModel);
             var category = await _categoryRepository.GetByIdAsync(requestModel.Id);
 
             return await Task.FromResult(_mapper.Map<CategoryDto>(category));
         }
-         
+
         public async Task<PagedList<CategoryDto>> GetPageAsync(CategoryRequestModels.GetPageRequestModel requestModel)
         {
-            var modelIsValid = ModelValidate(requestModel);
-        
+            var modelIsValid = await ModelValidateAsync(requestModel);
+
             Expression<Func<Category, bool>> predicate = (p) => (p.Status == requestModel.Status);
             var pagedCategory = _categoryRepository
                                 .GetPage<Guid>(new Pagination(requestModel.Paging.Page, requestModel.Paging.PageSize), predicate, o => o.Id, false, requestModel.Paging.TotalCount);
