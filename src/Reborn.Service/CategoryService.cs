@@ -8,6 +8,13 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Reborn.Domain.Model;
 using Reborn.Service.RequestModels;
+using Reborn.Service.RequestModels.Validators;
+using FluentValidation.Results;
+using System.Collections.Generic;
+using FluentValidation;
+using System.Reflection;
+using FluentValidation.Attributes;
+using Reborn.Common.Core.Exceptions;
 
 namespace Reborn.Service
 {
@@ -40,6 +47,7 @@ namespace Reborn.Service
 
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
+       // IValidatorFactory _validatorFactory;
 
         #endregion
 
@@ -49,6 +57,8 @@ namespace Reborn.Service
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
+           // _validatorFactory = validatorFactory;
+            
         }
 
         #endregion
@@ -61,17 +71,21 @@ namespace Reborn.Service
 
             return await Task.FromResult(_mapper.Map<CategoryDto>(category));
         }
-
+         
         public async Task<PagedList<CategoryDto>> GetPageAsync(CategoryRequestModels.GetPageRequestModel requestModel)
         {
+            var modelIsValid = ModelValidate(requestModel);
+        
             Expression<Func<Category, bool>> predicate = (p) => (p.Status == requestModel.Status);
             var pagedCategory = _categoryRepository
-                                .GetPage<Guid>(new Pagination(requestModel.Page, requestModel.PageSize), predicate, o => o.Id, false, requestModel.TotalCount);
+                                .GetPage<Guid>(new Pagination(requestModel.Paging.Page, requestModel.Paging.PageSize), predicate, o => o.Id, false, requestModel.Paging.TotalCount);
             var result = new PagedList<CategoryDto>(pagedCategory.Data.Select(_mapper.Map<CategoryDto>).ToList(), pagedCategory.TotalCount);
 
             return await Task.FromResult(result);
         }
 
-        #endregion
+        #endregion 
+
+
     }
 }

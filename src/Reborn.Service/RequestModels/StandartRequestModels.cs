@@ -7,7 +7,7 @@
             public string Id { get; set; }
         }
          
-        public abstract class BasePagingModel
+        public class BasePagingModel
         {
             public int PageSize { get; set; }
             public int Page { get; set; }

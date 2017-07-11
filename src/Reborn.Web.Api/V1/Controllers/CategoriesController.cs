@@ -28,14 +28,16 @@ namespace Reborn.Web.Api.V1.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            throw new Exception("asdasd");
 
             var result = await _categoryService.GetPageAsync(new CategoryRequestModels.GetPageRequestModel()
             {
-                Page = 1,
-                PageSize = 20,
-                TotalCount = true,
-                Slug = "turkiye",
+                Paging = new StandartRequestModels.BasePagingModel()
+                {
+                    Page = 1,
+                    PageSize = 20,
+                    TotalCount = true,
+                },
+                Slug = null,
                 Status = 2
             });
 
@@ -74,7 +76,7 @@ namespace Reborn.Web.Api.V1.Controllers
         /// <response code="400">If the item is null</response>
         [HttpPost]
         [ProducesResponseType(typeof(CategoryCreateViewModel), 200)]
-        [ProducesResponseType(typeof(ExceptionModel), 400)]      
+        [ProducesResponseType(typeof(ExceptionModel), 400)]
         public async Task<IActionResult> Post([FromBody]CategoryCreateViewModel model)
         {
 

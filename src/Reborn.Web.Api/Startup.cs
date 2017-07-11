@@ -22,6 +22,10 @@ using FluentValidation.Validators;
 using Reborn.Web.Api.Utils.Exception;
 using Reborn.Web.Api.V1.Models;
 using Reborn.Web.Api.V1.Models.Validators;
+using FluentValidation.Results;
+using System.Threading;
+using System.Threading.Tasks;
+using Reborn.Service.RequestModels;
 
 namespace Reborn.Web.Api
 {
@@ -52,7 +56,7 @@ namespace Reborn.Web.Api
                 m.Filters.Add(new ErrorActionFilter());
             }).AddFluentValidation(fv =>
             {
-                // fv.ValidatorFactoryType = typeof(FluentValidatorFactory); //typeof(AttributedValidatorFactory);
+               // fv.ValidatorFactoryType = typeof(ValidatorAttribute); //typeof(AttributedValidatorFactory);
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
 
@@ -94,7 +98,12 @@ namespace Reborn.Web.Api
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IDatabaseFactory, DatabaseFactory>();
-            // services.AddTransient<IValidatorFactory, FluentValidatorFactory>();
+
+            services.AddTransient<IValidatorFactory, FluentValidatorFactory>();
+
+           // services.AddTransient<IValidator<>, ValidatorDesValidacriptor<>();
+
+          // services.AddTransient<IValidator<CategoryRequestModels.GetPageRequestModel>, AbstractValidator<CategoryCreateViewModel>>();
 
             //services.AddTransient<IServiceProvider,Service.>()
 
@@ -126,53 +135,76 @@ namespace Reborn.Web.Api
         }
     }
 
-    //public class FluentValidatorFactory : IValidatorFactory
-    //{
-    //    private IServiceScopeFactory scopeFactory;
-    //    public FluentValidatorFactory(IServiceScopeFactory scopeFactory)
-    //    {
-    //        this.scopeFactory = scopeFactory;
-    //    }
+    public class FluentValidator : ValidatorFactoryBase
+    {
+        public override IValidator CreateInstance(Type validatorType)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
-    //    public IValidator<T> GetValidator<T>()
-    //    {
-    //        return (IValidator<T>)this.GetValidator(typeof(T));
-    //    }
+    public class ValidatorFactory
+    {
+        public IValidator GetValidator(Type type, object model)
+        {
+            var validatorAttributes = type.GetTypeInfo().GetCustomAttributes(typeof(ValidatorAttribute), true).ToList();
 
-    //    public IValidator GetValidator(Type type)
-    //    {
-    //        IValidator validator;
+            if (validatorAttributes.Count > 0)
+            {
+                var validatorAttribute = (ValidatorAttribute)validatorAttributes[0];
+                return Activator.CreateInstance(validatorAttribute.ValidatorType) as IValidator;
+            }
+            return null;
+        }
+    }
 
-    //        try
-    //        {
-    //            // Obtain instance of validator. If not registered, SimpleIoc will throw exception (although documentation said it will return null)
-    //            validator = this.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
-    //        }
-    //        catch (Exception exception)
-    //        {
-    //            // Get base type and try to find validator for base type (used for polymorphic classes)
-    //            var baseType = type.GetTypeInfo().BaseType;
-    //            if (baseType == null)
-    //            {
-    //                throw;
-    //            }
+    public class FluentValidatorFactory : IValidatorFactory
+    {
+        private IServiceScopeFactory scopeFactory;
+        public FluentValidatorFactory(IServiceScopeFactory scopeFactory)
+        {
+            this.scopeFactory = scopeFactory;
+        }
 
-    //            validator = this.CreateInstance(typeof(IValidator<>).MakeGenericType(baseType));
-    //        }
+        public IValidator<T> GetValidator<T>()
+        {
+            return (IValidator<T>)this.GetValidator(typeof(T));
+        }
 
-    //        return validator;
-    //    }
+        public IValidator GetValidator(Type type)
+        {
+            IValidator validator;
 
-    //    public IValidator CreateInstance(Type validatorType)
-    //    {
-    //        using (var scope = scopeFactory.CreateScope())
-    //        {
-    //            return scope.ServiceProvider.GetService(validatorType) as IValidator;
-    //        }
+            try
+            {
+                // Obtain instance of validator. If not registered, SimpleIoc will throw exception (although documentation said it will return null)
+                validator = this.CreateInstance(typeof(IValidator<>).MakeGenericType(type));
+            }
+            catch (Exception exception)
+            {
+                // Get base type and try to find validator for base type (used for polymorphic classes)
+                var baseType = type.GetTypeInfo().BaseType;
+                if (baseType == null)
+                {
+                    throw;
+                }
 
-    //        // return SimpleIoc.Default.GetInstance(validatorType) as IValidator;
-    //    }
-    //}
+                validator = this.CreateInstance(typeof(IValidator<>).MakeGenericType(baseType));
+            }
+
+            return validator;
+        }
+
+        public IValidator CreateInstance(Type validatorType)
+        {
+            using (var scope = scopeFactory.CreateScope())
+            {
+                return scope.ServiceProvider.GetService(validatorType) as IValidator;
+            }
+
+            // return SimpleIoc.Default.GetInstance(validatorType) as IValidator;
+        }
+    }
 
 
     public class FluentValidationRules : ISchemaFilter
@@ -285,4 +317,5 @@ namespace Reborn.Web.Api
             }
         }
     }
+
 }

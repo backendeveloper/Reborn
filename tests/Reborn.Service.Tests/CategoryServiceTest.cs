@@ -87,9 +87,9 @@ namespace Reborn.Service.Tests
                 }
             };
             var expectedResult = new PagedList<Category>(data, 8);
-            
+
             _mockRepository
-                .Setup(c => c.GetPage(It.IsAny<Pagination>(), It.IsAny<Expression<Func<Category, bool>>>(), It.IsAny<Expression<Func<Category, Guid>>>(), false,true))
+                .Setup(c => c.GetPage(It.IsAny<Pagination>(), It.IsAny<Expression<Func<Category, bool>>>(), It.IsAny<Expression<Func<Category, Guid>>>(), false, true))
                 .Returns(() => expectedResult);
 
             _mockMapper
@@ -99,9 +99,12 @@ namespace Reborn.Service.Tests
             //When
             var result = await _categoryService.GetPageAsync(new CategoryRequestModels.GetPageRequestModel()
             {
-                Page = 1,
-                PageSize = 20,
-                TotalCount = true,
+                Paging = new StandartRequestModels.BasePagingModel()
+                {
+                    Page = 1,
+                    PageSize = 20,
+                    TotalCount = true,
+                },
                 Slug = "turkiye",
                 Status = 2
             });
