@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Reborn.Service
 {
@@ -40,20 +41,17 @@ namespace Reborn.Service
 
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
-        IServiceValidator _serviceValidator;
-        // IValidatorFactory _validatorFactory;
+        private readonly IServiceValidator _serviceValidator;
 
         #endregion
 
         #region Constructors
 
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper,IServiceValidator serviceValidator)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper, IServiceValidator serviceValidator)
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
             _serviceValidator = serviceValidator;
-            // _validatorFactory = validatorFactory;
-
         }
 
         #endregion
@@ -62,7 +60,7 @@ namespace Reborn.Service
 
         public async Task<CategoryDto> GetByIdAsync(StandartRequestModels.GetByIdRequestModel requestModel)
         {
-            var modelIsValid = await _serviceValidator.ModelValidateAsync(requestModel);
+            _serviceValidator.ModelValidate(requestModel);
             var category = await _categoryRepository.GetByIdAsync(requestModel.Id);
 
             return await Task.FromResult(_mapper.Map<CategoryDto>(category));
@@ -70,7 +68,7 @@ namespace Reborn.Service
 
         public async Task<PagedList<CategoryDto>> GetPageAsync(CategoryRequestModels.GetPageRequestModel requestModel)
         {
-            var modelIsValid = await _serviceValidator.ModelValidateAsync(requestModel);
+            _serviceValidator.ModelValidate(requestModel);
 
             Expression<Func<Category, bool>> predicate = (p) => (p.Status == requestModel.Status);
             var pagedCategory = _categoryRepository
@@ -81,7 +79,5 @@ namespace Reborn.Service
         }
 
         #endregion 
-
-
     }
 }
