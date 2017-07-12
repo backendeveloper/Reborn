@@ -1,16 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Reborn.Service;
 using Reborn.Service.RequestModels;
-using Reborn.Service.RequestModels.Validators;
 using Reborn.Web.Api.Utils.Exception;
 using Reborn.Web.Api.V1.Models;
-using Reborn.Web.Api.V1.Models.Validators;
-using Reborn.Web.Api.V2.Controllers;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Threading.Tasks;
 
 namespace Reborn.Web.Api.V1.Controllers
 {

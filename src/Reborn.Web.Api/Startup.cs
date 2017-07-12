@@ -16,6 +16,7 @@ using Reborn.Web.Api.Utils.Swagger;
 using Reborn.Web.Api.Utils.Validator;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using Reborn.Service.Validator;
 
 namespace Reborn.Web.Api
 {

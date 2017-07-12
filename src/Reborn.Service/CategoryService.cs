@@ -9,6 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FluentValidation;
+using Reborn.Service.Validator;
 
 namespace Reborn.Service
 {
@@ -41,17 +42,15 @@ namespace Reborn.Service
 
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
-        private readonly IServiceValidator _serviceValidator;
 
         #endregion
 
         #region Constructors
 
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper, IServiceValidator serviceValidator)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper, IServiceValidator serviceValidator) : base(serviceValidator)
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
-            _serviceValidator = serviceValidator;
         }
 
         #endregion

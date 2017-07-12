@@ -10,6 +10,7 @@ using Reborn.Domain.Infrastructure;
 using Reborn.Domain.Model;
 using Reborn.Domain.Repository;
 using Reborn.Service.RequestModels;
+using Reborn.Service.Validator;
 using Xunit;
 
 namespace Reborn.Service.Tests
@@ -19,7 +20,7 @@ namespace Reborn.Service.Tests
         private readonly Mock<ICategoryRepository> _mockRepository;
         private readonly ICategoryService _categoryService;
         private readonly Mock<IMapper> _mockMapper;
-        readonly Mock<IServiceValidator> _mockServiceValidator;
+        private readonly Mock<IServiceValidator> _mockServiceValidator;
 
         public CategoryServiceTest()
         {
