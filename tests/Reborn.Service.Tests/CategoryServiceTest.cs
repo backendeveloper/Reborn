@@ -19,13 +19,14 @@ namespace Reborn.Service.Tests
         private readonly Mock<ICategoryRepository> _mockRepository;
         private readonly ICategoryService _categoryService;
         private readonly Mock<IMapper> _mockMapper;
-
+        readonly Mock<IServiceValidator> _mockServiceValidator;
 
         public CategoryServiceTest()
         {
             _mockMapper = new Mock<IMapper>();
             _mockRepository = new Mock<ICategoryRepository>();
-            _categoryService = new CategoryService(_mockRepository.Object, _mockMapper.Object);
+            _mockServiceValidator = new Mock<IServiceValidator>();
+            _categoryService = new CategoryService(_mockRepository.Object, _mockMapper.Object, _mockServiceValidator.Object);
         }
 
         [Fact]

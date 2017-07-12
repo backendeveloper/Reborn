@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using MongoDB.Driver.Linq;
 
 namespace Reborn.Domain.Infrastructure
 {
@@ -25,7 +26,8 @@ namespace Reborn.Domain.Infrastructure
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
         T GetById(string id);
         Task<T> GetByIdAsync(string id);
-        IQueryable<T> Get(Expression<Func<T, bool>> expression = null);
+
+        IMongoQueryable<T> Quarable { get; }
 
         long GetCount(Expression<Func<T, bool>> expression = null);
 

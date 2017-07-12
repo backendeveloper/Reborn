@@ -89,7 +89,7 @@ namespace Reborn.Domain.Infrastructure
 
         public virtual async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression)
         {
-            return await Collection.AsQueryable().FirstOrDefaultAsync(expression);
+            return await Quarable.FirstOrDefaultAsync(expression);
         }
 
         public virtual IQueryable<T> Get(Expression<Func<T, bool>> expression = null)
@@ -99,9 +99,12 @@ namespace Reborn.Domain.Infrastructure
                 result : Queryable.Where(result, expression);
         }
 
+        public virtual IMongoQueryable<T> Quarable => Collection.AsQueryable();
+
+
         public virtual T GetById(string id)
         {
-            return Collection.AsQueryable().FirstOrDefault(x => x.Id == id.ToGuid());
+            return Quarable.FirstOrDefault(x => x.Id == id.ToGuid());
         }
 
         public virtual async Task<T> GetByIdAsync(string id)
@@ -111,22 +114,22 @@ namespace Reborn.Domain.Infrastructure
 
         public virtual long GetCount(Expression<Func<T, bool>> expression = null)
         {
-            return Get(expression).Count();
+            return Quarable.Where(expression).Count();
         }
 
         public virtual bool Exist(Expression<Func<T, bool>> expression = null)
         {
-            return Get().Any(expression);
+            return Quarable.Any(expression);
         }
 
         public virtual PagedList<T> GetPage<TOrder>(Pagination pagination, Expression<Func<T, bool>> expression, Expression<Func<T, TOrder>> order, bool desc, bool totalCount)
         {
-            var resultsQuerable = Get();
+            var resultsQuerable = Quarable;
             resultsQuerable = desc ? resultsQuerable.OrderByDescending(order)
                 : resultsQuerable.OrderBy(order);
 
             var results = resultsQuerable.Where(expression).GetPage(pagination).ToList();
-            var total = totalCount ? Get().Count(expression) : 0;
+            var total = totalCount ? Quarable.Count(expression) : 0;
 
             return new PagedList<T>(results, total);
         }

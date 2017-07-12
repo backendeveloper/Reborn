@@ -8,7 +8,7 @@ namespace Reborn.Domain.Repository
     /// </summary>
     public interface ICategoryRepository : IRepository<Category>
     {
-
+        
     }
 
     /// <summary>
@@ -20,5 +20,7 @@ namespace Reborn.Domain.Repository
         {
 
         }
+
+      
     }
 }
