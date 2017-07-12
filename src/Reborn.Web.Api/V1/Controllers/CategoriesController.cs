@@ -14,14 +14,12 @@ namespace Reborn.Web.Api.V1.Controllers
     public class CategoriesController : BaseV1Controller
     {
         private readonly ICategoryService _categoryService;
-        private readonly IMapper _mapper;
-        private readonly IValidatorFactory _validatorFactory;
+        private readonly IMapper _mapper;        
 
-        public CategoriesController(ICategoryService categoryService, IMapper mapper, IValidatorFactory validatorFactory)
+        public CategoriesController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
             _mapper = mapper;
-            _validatorFactory = validatorFactory;
         }
 
         // GET api/categories
